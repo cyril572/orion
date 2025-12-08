@@ -1,0 +1,65 @@
+
+*{
+    margin: 0;
+    padding: 0;
+}
+h1{
+    text-align: center;
+    font-size: 30px;
+    padding: 5px;
+    background-color: purple;
+    color: white;
+}
+
+.userItem {
+    display: flex;
+    flex-direction: column-reverse;
+    text-align: center;
+    gap: 20px;
+  align-items: center;
+  background-color: rgba(255,255,255,0.2);
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+  margin-top: 190px;
+
+  
+}
+
+.userItem:hover {
+  background-color: rgba(255,255,255,0.4);
+}
+
+.userItem img {
+  border-radius: 50%;
+  margin: 0 10px;
+  width: 100px;
+  height: 100px;
+  box-shadow: 0px 0px 9px purple;
+}
+
+.userItem div p {
+  margin: 0;
+  font-size: 12px;
+  font-size: 40px;
+  color: gray ;
+  
+}
+
+.addFriendBtn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  background-color: purple;
+  font-size: 30px;
+  color: white;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.addFriendBtn:hover {
+  background-color: rgba(255,255,255,0.8);
+  
+}

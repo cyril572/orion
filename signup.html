@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sign Up</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Create Your Profile</h1>
+    <form id="signupForm">
+      <input type="email" id="email" placeholder="Email" required  style="font-size: 30px;" />
+      <input type="password" id="password" placeholder="Password" required  style="font-size:30px;" />
+      <input type="text" id="username" placeholder="Username" required  style="font-size:30px;"  />
+      <textarea id="bio" placeholder="Bio"  style="font-size:30px;" ></textarea>
+      <input type="date" id="dob" placeholder="Date of Birth" required   style="font-size:30px;" />
+      <input type="tel" id="phone" placeholder="Phone number"  style="font-size:30px;"  />
+      <input type="text" id="profilePic" placeholder="Profile Image URL (optional)"  style="font-size:30px;" />
+      <button type="submit"  style="font-size:30px;" >Sign Up</button>
+    </form>
+    <p style="font-size:30px;" >Already have an account? <a href="login.html" style="font-size:50px;" >Login</a></p>
+  </div>
+  
+
+  <script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyAygGBBR5HieXwdsL9f7M8uhaoh-mYHSuc",
+        authDomain: "website-53417.firebaseapp.com",
+        projectId: "website-53417",
+        storageBucket: "website-53417.firebasestorage.app",
+        messagingSenderId: "1049856174962",
+        appId: "1:1049856174962:web:04fdd8707515fdbe6a8beb",
+        measurementId: "G-WPEBYN7643"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    document.getElementById("signupForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const phone = document.getElementById("phone").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const username = document.getElementById("username").value;
+      const bio = document.getElementById("bio").value;
+      const dob = document.getElementById("dob").value;
+      const profilePic = document.getElementById("profilePic").value || "https://i.pravatar.cc/150";
+
+      try {
+        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+        const user = userCredential.user;
+
+       
+        await db.collection("users").doc(user.uid).set({
+          username,
+          bio,
+          dob,
+          profilePic,
+          email,
+          phone
+
+        });
+
+       
+        window.location.href = "profile.html";
+
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: purple; 
+  color: white; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+
+.container {
+  background-color: purple; 
+  padding: 160px 160px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px white;
+  width: 350px;
+  text-align: center;
+}
+
+
+h1, h2 {
+  margin-bottom: 20px;
+  color: white;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+input[type="tel"],
+textarea {
+  width: 90%;
+  padding: 21px 15px;
+  margin: 8px 0 15px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
+  color: black; 
+}
+
+input:focus,
+textarea:focus {
+  border-color: white;
+  box-shadow: 0 0 5px rgba(255,255,255,0.5);
+
+ 
+}
+
+
+textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+
+button {
+  width: 50%;
+  padding: 12px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 8px;
+  background-color: white; 
+  color: orange; 
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+
+button:hover {
+  background-color: rgba(255,255,255,0.8);
+}
+
+
+a {
+  color:red;
+  text-decoration: underline;
+}
+
+a:hover {
+  color: #ffcc80; 
+}
+
+
+#profilePic {
+  border-radius: 50%;
+  margin-bottom: 15px;
+  border: 2px solid white;
+}
+
+
+#editFormContainer input,
+#editFormContainer textarea {
+  margin-bottom: 12px;
+  
+}
+button{
+  font-size: 30px;
+}
+
+
+@media (max-width: 400px) {
+  .container {
+    width: 90%;
+    padding: 30px 20px;
+  }
+ 
+ 
+}

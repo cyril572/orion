@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Login</h1>
+    <form id="loginForm">
+      <input type="email" id="email" placeholder="Email" required style="font-size: 30px;"/>
+      <input type="password" id="password" placeholder="Password" required style="font-size: 30px;"/>
+      <button type="submit" style="font-size: 30px;">Login</button>
+    </form>
+    <p style="font-size: 30px;">Don't have an account? <a href="signup.html">Sign Up</a></p>
+  </div>
+
+  <script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyAygGBBR5HieXwdsL9f7M8uhaoh-mYHSuc",
+        authDomain: "website-53417.firebaseapp.com",
+        projectId: "website-53417",
+        storageBucket: "website-53417.firebasestorage.app",
+        messagingSenderId: "1049856174962",
+        appId: "1:1049856174962:web:04fdd8707515fdbe6a8beb",
+        measurementId: "G-WPEBYN7643"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      try {
+        await auth.signInWithEmailAndPassword(email, password);
+        const user = auth.currentUser;
+
+       
+        const doc = await db.collection("users").doc(user.uid).get();
+        if (doc.exists) {
+          window.location.href = "profile.html"; 
+        } else {
+          window.location.href = "signup.html"; 
+        }
+
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+  </script>
+</body>
+</html>

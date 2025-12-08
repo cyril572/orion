@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Contacts</title>
+  <link rel="stylesheet" href="users.css">
+</head>
+<body>
+<div class="container">
+  <h1 style="font-size:40px;" >Contacts</h1>
+  <div id="usersList" style="font-size:50px; margin-bottom:180px ; ">
+    
+  </div>
+  <button id="backProfile" style="font-size:30px; padding-left: 30px; padding-right:30px; padding-top: 20px; padding-bottom: 20px; margin-left: 30px; color: white; background-color: purple;" >Back to Profile</button>
+  <button id="logout" style="font-size:30px; padding-left: 30px; padding-right:30px; padding-top: 20px; padding-bottom: 20px; margin-left: 30px; color: white; color:red;">Logout</button>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+    apiKey: "AIzaSyAygGBBR5HieXwdsL9f7M8uhaoh-mYHSuc",
+    authDomain: "website-53417.firebaseapp.com",
+    projectId: "website-53417",
+    storageBucket: "website-53417.firebasestorage.app",
+    messagingSenderId: "1049856174962",
+    appId: "1:1049856174962:web:04fdd8707515fdbe6a8beb",
+    measurementId: "G-WPEBYN7643"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+let currentUser;
+
+auth.onAuthStateChanged(async (user)=>{
+  if(!user){window.location.href="login.html"; return;}
+  currentUser = user;
+  const usersList = document.getElementById("usersList");
+
+  db.collection("users").onSnapshot(async snapshot=>{
+    usersList.innerHTML="";
+    for(const doc of snapshot.docs){
+      const data = doc.data();
+      if(doc.id === currentUser.uid) continue; // skip self
+
+      const userDiv = document.createElement("div");
+      userDiv.classList.add("userItem");
+
+      // Check if already a friend
+      const friendDoc = await db.collection("users").doc(currentUser.uid)
+        .collection("friends").doc(doc.id).get();
+
+      if(friendDoc.exists){
+        // Already friend → show last message
+        const lastMsg = friendDoc.data().lastMessage || "";
+        const lastTime = friendDoc.data().lastTime ? new Date(friendDoc.data().lastTime.toDate()).toLocaleTimeString() : "";
+        userDiv.innerHTML = `
+          <img src="${data.profilePic}" width="50" height="50" style="margin-right:10px;">
+          <div>
+            <strong>${data.username}</strong>
+            <p>${lastMsg}</p>
+            <small>${lastTime}</small>
+          </div>
+        `;
+      }else{
+        // Not friend → show Add Friend
+        userDiv.innerHTML = `
+          <button class="addFriendBtn">Add Friend</button>
+          <img src="${data.profilePic}" width="50" height="50" style="margin-right:10px;">
+          <div>
+            <strong>${data.username}</strong>
+            <p>${data.bio || ''}</p>
+          </div>
+        `;
+
+        // Add Friend → immediately open chat
+        userDiv.querySelector(".addFriendBtn").addEventListener("click", async (e)=>{
+          e.stopPropagation();
+          await db.collection("users").doc(currentUser.uid)
+            .collection("friends").doc(doc.id).set({
+              username: data.username,
+              profilePic: data.profilePic,
+              dateAdded: firebase.firestore.FieldValue.serverTimestamp()
+            });
+          const chatId = [currentUser.uid, doc.id].sort().join("_");
+          window.location.href = `chat.html?chatId=${chatId}&user=${data.username}`;
+        });
+      }
+
+      // Click to open chat if already friend
+      userDiv.addEventListener("click", async ()=>{
+        const friendCheck = await db.collection("users").doc(currentUser.uid)
+          .collection("friends").doc(doc.id).get();
+        if(friendCheck.exists){
+          const chatId = [currentUser.uid, doc.id].sort().join("_");
+          window.location.href = `chat.html?chatId=${chatId}&user=${data.username}`;
+        }else{
+          alert("Add as friend first to chat!");
+        }
+      });
+
+      usersList.appendChild(userDiv);
+    }
+  });
+
+  document.getElementById("backProfile").addEventListener("click", ()=>{
+    window.location.href = "profile.html";
+  });
+
+  document.getElementById("logout").addEventListener("click", ()=>{
+    auth.signOut().then(()=>window.location.href="login.html");
+  });
+});
+</script>
+</body>
+</html>
