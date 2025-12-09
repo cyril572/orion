@@ -2,25 +2,28 @@
 <html>
 <head>
   <title>Sign Up</title>
-  <link rel="stylesheet" href="style.css">
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+   <link rel="stylesheet" href="signup.css">
 </head>
 <body>
   <div class="container">
+    <header>
     <h1>Create Your Profile</h1>
+    </header>
+
     <form id="signupForm">
-      <input type="email" id="email" placeholder="Email" required  style="font-size: 30px;" />
-      <input type="password" id="password" placeholder="Password" required  style="font-size:30px;" />
-      <input type="text" id="username" placeholder="Username" required  style="font-size:30px;"  />
-      <textarea id="bio" placeholder="Bio"  style="font-size:30px;" ></textarea>
-      <input type="date" id="dob" placeholder="Date of Birth" required   style="font-size:30px;" />
-      <input type="tel" id="phone" placeholder="Phone number"  style="font-size:30px;"  />
-      <input type="text" id="profilePic" placeholder="Profile Image URL (optional)"  style="font-size:30px;" />
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <input type="text" id="username" placeholder="Username" required />
+      <textarea id="bio" placeholder="Bio" ></textarea>
+      <input type="date" id="dob" placeholder="Date of Birth" required />
+      <input type="tel" id="phone" placeholder="Phone number" />
+      <input type="text" id="profilePic" placeholder="Profile Image URL (optional)"/>
       <button type="submit"  style="font-size:30px;" >Sign Up</button>
     </form>
-    <p style="font-size:30px;" >Already have an account? <a href="login.html" style="font-size:50px;" >Login</a></p>
+    <p id="account">Already have an account? <a href="login.html" id="login">Login</a></p>
   </div>
   
 
